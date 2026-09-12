@@ -1,70 +1,108 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
 body {
     margin: 0;
-    padding: 10px;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 
     background: #000;
     color: white;
     font-family: Arial, sans-serif;
 
-    min-height: 100vh;
-    overflow: hidden;
-
-    touch-action: none;
+    padding: 12px;
+    overflow-x: hidden;
+    touch-action: manipulation;
 }
+
+/* =========================
+   SCORE
+========================= */
 
 #score {
     color: yellow;
     text-shadow: 0 0 10px yellow;
-    margin: 5px;
+
+    margin: 5px 0;
+    font-size: clamp(22px, 4vw, 32px);
+    text-align: center;
 }
+
+/* =========================
+   LEVEL
+========================= */
 
 #level {
     color: #00aaff;
-    margin: 5px;
+
+    margin: 2px 0 8px;
+    font-size: clamp(17px, 3vw, 24px);
+    text-align: center;
 }
+
+/* =========================
+   GAME CANVAS
+========================= */
 
 canvas {
+    display: block;
+
     background-color: #000;
+
     border: 4px solid #00f;
-    box-shadow: 0 0 20px #00f;
     border-radius: 10px;
 
-    margin-top: 10px;
+    box-shadow: 0 0 20px #00f;
 
-    /* Important for mobile */
-    max-width: 90vw;
-    max-height: 55vh;
+    /*
+       The JavaScript controls the real
+       canvas resolution.
 
-    width: auto;
+       CSS controls how large it appears
+       on the screen.
+    */
+    width: min(80vw, 600px);
     height: auto;
+
+    max-width: 100%;
 }
 
-/* ---------------- MOBILE CONTROLS ---------------- */
+/* =========================
+   MOBILE CONTROLS
+========================= */
 
 #controls {
-    margin-top: 15px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
 
+    margin-top: clamp(10px, 2.5vw, 18px);
+
     user-select: none;
     -webkit-user-select: none;
-    touch-action: none;
+
+    touch-action: manipulation;
 }
 
 .middle-controls {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .control {
-    width: 60px;
-    height: 60px;
+    width: clamp(50px, 13vw, 65px);
+    height: clamp(50px, 13vw, 65px);
 
     margin: 4px;
 
@@ -74,22 +112,25 @@ canvas {
     background: #111;
     color: white;
 
-    font-size: 25px;
+    font-size: clamp(20px, 6vw, 28px);
     font-weight: bold;
 
     cursor: pointer;
 
     touch-action: manipulation;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
 .control:active {
     background: #00aaff;
     color: black;
-
-    transform: scale(0.95);
+    transform: scale(0.94);
 }
 
-/* ---------------- POPUP ---------------- */
+/* =========================
+   POPUP
+========================= */
 
 #popup {
     position: fixed;
@@ -99,9 +140,11 @@ canvas {
 
     transform: translate(-50%, -50%);
 
+    width: min(85vw, 360px);
+
     background: #222;
 
-    padding: 30px;
+    padding: clamp(20px, 6vw, 30px);
 
     border-radius: 15px;
 
@@ -110,6 +153,16 @@ canvas {
     border: 2px solid yellow;
 
     z-index: 10;
+
+    box-shadow: 0 0 25px rgba(255, 255, 0, 0.35);
+}
+
+#popup h2 {
+    margin-top: 0;
+}
+
+#popup p {
+    margin-bottom: 20px;
 }
 
 .hidden {
@@ -117,39 +170,48 @@ canvas {
 }
 
 #popup-button {
+    min-width: 120px;
+    min-height: 44px;
+
     padding: 10px 20px;
 
     font-size: 16px;
 
     cursor: pointer;
 
+    border: none;
     border-radius: 8px;
+
+    background: yellow;
+    color: black;
+
+    font-weight: bold;
 }
 
-/* ---------------- PHONE ---------------- */
+/* =========================
+   SMALL PHONES
+========================= */
 
-@media (max-width: 600px) {
+@media (max-width: 400px) {
 
     body {
-        padding: 5px;
-    }
-
-    #score {
-        font-size: 24px;
-    }
-
-    #level {
-        font-size: 18px;
+        padding: 8px;
     }
 
     canvas {
-        max-width: 92vw;
-        max-height: 50vh;
+        width: 94vw;
     }
 
     .control {
-        width: 55px;
-        height: 55px;
-        font-size: 22px;
+        width: 52px;
+        height: 52px;
+
+        margin: 3px;
+
+        font-size: 21px;
+    }
+
+    #controls {
+        margin-top: 1
     }
 }
