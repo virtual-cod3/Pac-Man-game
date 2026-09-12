@@ -4,17 +4,33 @@
     <title>Mini Pacman</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
     <h1 id="score">Score: 0</h1>
     <h2 id="level">Level: 1</h2>
+
     <canvas id="game"></canvas>
-    
+
+    <!-- Mobile Controls -->
+    <div id="controls">
+        <button class="control up" data-key="ArrowUp">▲</button>
+
+        <div class="middle-controls">
+            <button class="control" data-key="ArrowLeft">◀</button>
+            <button class="control" data-key="ArrowDown">▼</button>
+            <button class="control" data-key="ArrowRight">▶</button>
+        </div>
+    </div>
+
+    <!-- Popup -->
     <div id="popup" class="hidden">
         <h2 id="popup-title"></h2>
         <p id="popup-text"></p>
-        <button id="popup-button" onclick="restartGame()">Restart</button>
+        <button id="popup-button">Restart</button>
     </div>
 
     <script src="script.js"></script>
+
 </body>
 </html>
