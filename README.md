@@ -52,7 +52,7 @@ A responsive browser-based Pac-Man game built using **HTML, CSS, and JavaScript*
 ## 🌐 Live Demo
 
 **Pac-Man Ultimate:**
-https://virtual-cod3.github.io/pacman-game/
+https://virtual-cod3.github.io/Pac-Man-game/
 
 ## 👨‍💻 Author
 
