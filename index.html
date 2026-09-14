@@ -4,64 +4,152 @@
 <head>
     <meta charset="UTF-8">
 
-    <!-- Important for responsive mobile display -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>Mini Pacman</title>
+    <title>Pac-Man Ultimate</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1 id="score">Score: 0</h1>
+    <main class="game-wrapper">
 
-    <h2 id="level">Level: 1</h2>
+        <!-- TOP BAR -->
+        <header class="top-bar">
 
-    <canvas id="game"></canvas>
+            <div class="stat">
+                <span class="label">SCORE</span>
+                <span id="score">0</span>
+            </div>
+
+            <div class="game-title">
+                <span>PAC</span><span>MAN</span>
+            </div>
+
+            <div class="stat">
+                <span class="label">HIGH SCORE</span>
+                <span id="highScore">0</span>
+            </div>
+
+        </header>
 
 
-    <!-- Mobile Controls -->
+        <!-- LEVEL / LIVES -->
+        <div class="level-bar">
 
-    <div id="controls">
+            <span id="level">LEVEL 1</span>
 
-        <button class="control up" data-key="ArrowUp">
-            ▲
-        </button>
+            <span id="lives">❤️ ❤️ ❤️</span>
 
-        <div class="middle-controls">
+        </div>
 
-            <button class="control" data-key="ArrowLeft">
-                ◀
+
+        <!-- GAME -->
+        <section class="game-container">
+
+            <canvas id="game"></canvas>
+
+
+            <!-- MESSAGE SCREEN -->
+            <div id="message" class="message hidden">
+
+                <div class="message-box">
+
+                    <div class="arcade-decoration">
+                        <span class="mini-pacman"></span>
+                        <span class="mini-ghost red"></span>
+                        <span class="mini-ghost pink"></span>
+                        <span class="mini-ghost cyan"></span>
+                    </div>
+
+                    <h2 id="messageTitle">PAC-MAN</h2>
+
+                    <p id="messageText">
+                        Eat every pellet, collect power pellets and avoid the ghosts!
+                    </p>
+
+                    <div id="messageStats" class="message-stats hidden">
+
+                        <div>
+                            <span>FINAL SCORE</span>
+                            <strong id="finalScore">0</strong>
+                        </div>
+
+                        <div>
+                            <span>LEVEL</span>
+                            <strong id="finalLevel">1</strong>
+                        </div>
+
+                    </div>
+
+                    <div id="newHighScore" class="new-high-score hidden">
+                        ★ NEW HIGH SCORE ★
+                    </div>
+
+                    <button id="messageButton">
+                        START GAME
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- GAME BUTTONS -->
+        <div class="game-buttons">
+
+            <button id="pauseButton">
+                ⏸ PAUSE
             </button>
 
-            <button class="control" data-key="ArrowDown">
-                ▼
-            </button>
-
-            <button class="control" data-key="ArrowRight">
-                ▶
+            <button id="restartButton">
+                ↻ RESTART
             </button>
 
         </div>
 
-    </div>
+
+        <!-- MOBILE CONTROLS -->
+        <div id="controls">
+
+            <button class="control up"
+                data-direction="up">
+                ▲
+            </button>
+
+            <div class="middle-controls">
+
+                <button class="control"
+                    data-direction="left">
+                    ◀
+                </button>
+
+                <button class="control"
+                    data-direction="down">
+                    ▼
+                </button>
+
+                <button class="control"
+                    data-direction="right">
+                    ▶
+                </button>
+
+            </div>
+
+        </div>
 
 
-    <!-- Popup -->
+        <p class="help">
+            Desktop: Arrow Keys / WASD
+            &nbsp; • &nbsp;
+            Mobile: Touch Controls
+        </p>
 
-    <div id="popup" class="hidden">
-
-        <h2 id="popup-title"></h2>
-
-        <p id="popup-text"></p>
-
-        <button id="popup-button">
-            Restart
-        </button>
-
-    </div>
-
+    </main>
 
     <script src="script.js"></script>
 

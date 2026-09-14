@@ -1,217 +1,771 @@
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 html,
 body {
-    margin: 0;
-    padding: 0;
     width: 100%;
     min-height: 100%;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    background:
+        radial-gradient(
+            circle at top,
+            #10104a 0%,
+            #05051c 35%,
+            #000 75%
+        );
 
-    background: #000;
     color: white;
-    font-family: Arial, sans-serif;
 
-    padding: 12px;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 14px;
+
     overflow-x: hidden;
+
     touch-action: manipulation;
 }
 
-/* =========================
-   SCORE
-========================= */
 
-#score {
-    color: yellow;
-    text-shadow: 0 0 10px yellow;
+/* =========================================
+   MAIN WRAPPER
+========================================= */
 
-    margin: 5px 0;
-    font-size: clamp(22px, 4vw, 32px);
-    text-align: center;
+.game-wrapper {
+    width: min(100%, 760px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* =========================
-   LEVEL
-========================= */
+
+/* =========================================
+   TOP BAR
+========================================= */
+
+.top-bar {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr auto 1fr;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 6px;
+}
+
+.game-title {
+    font-size: clamp(24px, 6vw, 44px);
+
+    font-weight: 900;
+
+    letter-spacing: 3px;
+
+    font-style: italic;
+
+    text-shadow:
+        0 0 8px #ffff00,
+        0 0 20px #ffff00;
+
+    animation: titleGlow 1.8s infinite alternate;
+}
+
+.game-title span:first-child {
+    color: #ffff00;
+}
+
+.game-title span:last-child {
+    color: #ffcc00;
+}
+
+@keyframes titleGlow {
+    from {
+        filter: brightness(0.9);
+    }
+
+    to {
+        filter: brightness(1.2);
+    }
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.stat:last-child {
+    align-items: flex-end;
+}
+
+.label {
+    color: #aaa;
+
+    font-size:
+        clamp(9px, 2vw, 12px);
+
+    letter-spacing: 1px;
+}
+
+.stat span:last-child {
+    color: white;
+
+    font-size:
+        clamp(16px, 4vw, 23px);
+
+    font-weight: bold;
+}
+
+
+/* =========================================
+   LEVEL / LIVES
+========================================= */
+
+.level-bar {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 8px;
+
+    padding: 0 3px;
+}
 
 #level {
-    color: #00aaff;
+    color: #00d9ff;
 
-    margin: 2px 0 8px;
-    font-size: clamp(17px, 3vw, 24px);
-    text-align: center;
+    font-size:
+        clamp(14px, 3vw, 19px);
+
+    font-weight: bold;
+
+    text-shadow:
+        0 0 8px #00d9ff;
 }
 
-/* =========================
-   GAME CANVAS
-========================= */
+#lives {
+    font-size:
+        clamp(13px, 3vw, 18px);
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   GAME AREA
+========================================= */
+
+.game-container {
+    position: relative;
+
+    width: min(100%, 700px);
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
 
 canvas {
     display: block;
 
-    background-color: #000;
-
-    border: 4px solid #00f;
-    border-radius: 10px;
-
-    box-shadow: 0 0 20px #00f;
-
-    /*
-       The JavaScript controls the real
-       canvas resolution.
-
-       CSS controls how large it appears
-       on the screen.
-    */
-    width: min(80vw, 600px);
+    width: 100%;
     height: auto;
 
-    max-width: 100%;
+    background: #000;
+
+    border: 3px solid #1728ff;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 0 10px #1728ff,
+        0 0 30px rgba(23, 40, 255, 0.6),
+        inset 0 0 20px rgba(0, 0, 80, 0.8);
+
+    image-rendering: auto;
 }
 
-/* =========================
+
+/* =========================================
+   MESSAGE SCREEN
+========================================= */
+
+.message {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        rgba(0, 0, 0, 0.78);
+
+    border-radius: 8px;
+
+    z-index: 20;
+
+    backdrop-filter: blur(5px);
+
+    animation: overlayIn 0.25s ease;
+}
+
+@keyframes overlayIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================
+   MESSAGE BOX
+========================================= */
+
+.message-box {
+    width: min(90%, 410px);
+
+    padding: 28px 20px 24px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #18184f,
+            #07071c
+        );
+
+    border: 2px solid #ffff00;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 0 15px rgba(255, 255, 0, 0.65),
+        0 0 50px rgba(255, 255, 0, 0.25);
+
+    animation: boxIn 0.35s ease;
+}
+
+@keyframes boxIn {
+    from {
+        transform: scale(0.82);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* =========================================
+   ARCADE DECORATION
+========================================= */
+
+.arcade-decoration {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 16px;
+
+    margin-bottom: 16px;
+}
+
+.mini-pacman {
+    width: 24px;
+    height: 24px;
+
+    border-radius: 50%;
+
+    background: #ffff00;
+
+    position: relative;
+
+    animation:
+        pacmanFloat 1s infinite alternate;
+}
+
+.mini-pacman::after {
+    content: "";
+
+    position: absolute;
+
+    top: 6px;
+    right: -1px;
+
+    width: 0;
+    height: 0;
+
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+
+    border-right: 11px solid #18184f;
+
+    transform: rotate(0deg);
+}
+
+@keyframes pacmanFloat {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-4px);
+    }
+}
+
+.mini-ghost {
+    width: 22px;
+    height: 22px;
+
+    border-radius:
+        12px 12px 4px 4px;
+
+    position: relative;
+
+    animation:
+        ghostFloat 1.2s infinite alternate;
+}
+
+.mini-ghost::after {
+    content: "••";
+
+    position: absolute;
+
+    color: white;
+
+    font-size: 12px;
+
+    left: 5px;
+    top: 2px;
+
+    letter-spacing: 2px;
+}
+
+.mini-ghost.red {
+    background: #ff3333;
+}
+
+.mini-ghost.pink {
+    background: #ff77dd;
+
+    animation-delay: 0.15s;
+}
+
+.mini-ghost.cyan {
+    background: #00eaff;
+
+    animation-delay: 0.3s;
+}
+
+@keyframes ghostFloat {
+    from {
+        transform: translateY(2px);
+    }
+
+    to {
+        transform: translateY(-4px);
+    }
+}
+
+
+/* =========================================
+   MESSAGE TEXT
+========================================= */
+
+.message-box h2 {
+    color: #ffff00;
+
+    font-size:
+        clamp(28px, 7vw, 44px);
+
+    margin-bottom: 10px;
+
+    text-shadow:
+        0 0 10px #ffff00,
+        0 0 25px rgba(255, 255, 0, 0.5);
+
+    letter-spacing: 1px;
+}
+
+.message-box p {
+    color: #ddd;
+
+    line-height: 1.5;
+
+    font-size:
+        clamp(14px, 3vw, 18px);
+
+    margin-bottom: 18px;
+}
+
+
+/* =========================================
+   MESSAGE STATS
+========================================= */
+
+.message-stats {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 25px;
+
+    margin: 14px 0 16px;
+}
+
+.message-stats div {
+    min-width: 100px;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(0, 0, 0, 0.35);
+
+    border:
+        1px solid rgba(0, 217, 255, 0.5);
+}
+
+.message-stats span {
+    display: block;
+
+    color: #888;
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 5px;
+}
+
+.message-stats strong {
+    display: block;
+
+    color: #fff;
+
+    font-size: 21px;
+}
+
+
+/* =========================================
+   NEW HIGH SCORE
+========================================= */
+
+.new-high-score {
+    color: #ffff00;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    margin: 10px 0 15px;
+
+    animation:
+        highScoreFlash 0.8s infinite alternate;
+
+    text-shadow:
+        0 0 8px #ffff00;
+}
+
+@keyframes highScoreFlash {
+    from {
+        opacity: 0.55;
+        transform: scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1.04);
+    }
+}
+
+
+/* =========================================
+   MESSAGE BUTTON
+========================================= */
+
+.message-box button {
+    min-width: 170px;
+
+    padding: 13px 24px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #ffff00;
+
+    color: #111;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s,
+        box-shadow 0.15s;
+}
+
+.message-box button:hover {
+    transform: scale(1.06);
+
+    box-shadow:
+        0 0 15px #ffff00,
+        0 0 30px rgba(255, 255, 0, 0.4);
+}
+
+.message-box button:active {
+    transform: scale(0.95);
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================================
+   GAME BUTTONS
+========================================= */
+
+.game-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 10px;
+}
+
+.game-buttons button {
+    padding: 9px 17px;
+
+    border:
+        1px solid #00bfff;
+
+    border-radius: 8px;
+
+    background: #080818;
+
+    color: #fff;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.15s;
+}
+
+.game-buttons button:hover {
+    background: #00bfff;
+
+    color: #000;
+
+    box-shadow:
+        0 0 12px #00bfff;
+}
+
+.game-buttons button:active {
+    transform: scale(0.95);
+}
+
+
+/* =========================================
    MOBILE CONTROLS
-========================= */
+========================================= */
 
 #controls {
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
 
-    margin-top: clamp(10px, 2.5vw, 18px);
+    margin-top: 13px;
 
     user-select: none;
-    -webkit-user-select: none;
 
-    touch-action: manipulation;
+    -webkit-user-select: none;
 }
 
 .middle-controls {
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 }
 
 .control {
-    width: clamp(50px, 13vw, 65px);
-    height: clamp(50px, 13vw, 65px);
+    width:
+        clamp(50px, 14vw, 68px);
 
-    margin: 4px;
+    height:
+        clamp(50px, 14vw, 68px);
 
-    border: 2px solid #00aaff;
-    border-radius: 12px;
+    margin: 3px;
 
-    background: #111;
+    border:
+        2px solid #00bfff;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #17172b,
+            #07070f
+        );
+
     color: white;
 
-    font-size: clamp(20px, 6vw, 28px);
+    font-size:
+        clamp(21px, 6vw, 30px);
+
     font-weight: bold;
 
     cursor: pointer;
 
     touch-action: manipulation;
 
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color:
+        transparent;
+
+    box-shadow:
+        0 3px 8px
+        rgba(0, 0, 0, 0.6);
+
+    transition: 0.1s;
 }
 
 .control:active {
-    background: #00aaff;
-    color: black;
-    transform: scale(0.94);
+    transform: scale(0.9);
+
+    background: #00bfff;
+
+    color: #000;
+
+    box-shadow:
+        0 0 18px #00bfff;
 }
 
-/* =========================
-   POPUP
-========================= */
 
-#popup {
-    position: fixed;
+/* =========================================
+   HELP
+========================================= */
 
-    top: 50%;
-    left: 50%;
+.help {
+    margin-top: 9px;
 
-    transform: translate(-50%, -50%);
-
-    width: min(85vw, 360px);
-
-    background: #222;
-
-    padding: clamp(20px, 6vw, 30px);
-
-    border-radius: 15px;
+    color: #777;
 
     text-align: center;
 
-    border: 2px solid yellow;
-
-    z-index: 10;
-
-    box-shadow: 0 0 25px rgba(255, 255, 0, 0.35);
+    font-size:
+        clamp(9px, 2.5vw, 12px);
 }
 
-#popup h2 {
-    margin-top: 0;
-}
 
-#popup p {
-    margin-bottom: 20px;
-}
-
-.hidden {
-    display: none;
-}
-
-#popup-button {
-    min-width: 120px;
-    min-height: 44px;
-
-    padding: 10px 20px;
-
-    font-size: 16px;
-
-    cursor: pointer;
-
-    border: none;
-    border-radius: 8px;
-
-    background: yellow;
-    color: black;
-
-    font-weight: bold;
-}
-
-/* =========================
+/* =========================================
    SMALL PHONES
-========================= */
+========================================= */
 
-@media (max-width: 400px) {
+@media (max-width: 420px) {
 
     body {
         padding: 8px;
     }
 
-    canvas {
-        width: 94vw;
+    .top-bar {
+        gap: 5px;
     }
 
-    .control {
-        width: 52px;
-        height: 52px;
+    .game-title {
+        letter-spacing: 1px;
+    }
 
-        margin: 3px;
+    canvas {
+        border-width: 2px;
+    }
 
-        font-size: 21px;
+    .game-buttons button {
+        padding: 8px 13px;
+
+        font-size: 13px;
     }
 
     #controls {
-        margin-top: 1
+        margin-top: 8px;
     }
+
+    .message-box {
+        padding:
+            22px 15px 20px;
+    }
+
+    .arcade-decoration {
+        gap: 10px;
+
+        margin-bottom: 10px;
+    }
+
+    .message-stats {
+        gap: 10px;
+    }
+
+    .message-stats div {
+        min-width: 90px;
+    }
+}
+
+
+/* =========================================
+   DESKTOP
+========================================= */
+
+@media (min-width: 800px) {
+
+    #controls {
+        display: none;
+    }
+
 }
